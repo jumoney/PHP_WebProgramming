@@ -35,10 +35,25 @@
 
 <table>
 	<tr>
-		<td>파일명
-			<a href="?sort">
-		</td>
+		<th>파일명
+			<a href="?sort=fname$dir=asc">^</a>
+			<a href="?sort=fname&dir=desc">V</a>
+		</th>
+		<th>업로드
+			<a href="?sort=ftime$dir=asc">^</a>
+			<a href="?sort=ftime&dir=desc">V</a>
+		</th>
+		<th>크기</th>
+		<th>삭제</th>
 	</tr>
+	<?php foreach ($result as $row) : ?>
+	<tr>
+		<td class="left"><a href="files/<?= $row["fname"] ?>"><?= $row["fname"] ?></a></td>
+		<td><?= $row["ftime"] ?></td>
+		<td class="right"><?= $row["fsize"] ?><?= $row["fsize"] ?>&nbsp;&nbsp;</td>
+		<td><a href="del_file.php?num=<?= $row["num"] ?>&sort=<?= $sort ?>&dir=<?= $dir ?>">X</td>
+	</tr>
+	<?php endforeach ?>
 </table>
 </body>
 </html>
