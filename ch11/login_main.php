@@ -4,7 +4,7 @@
 	//사용자 아이디와 이름을 담은 세션 변수 읽기
 	session_start_if_none();
 	$id = sessionVar("uid");
-	$name = sessionVar("name");
+	$name = sessionVar("uname");
 ?>
 
 <!doctype html>

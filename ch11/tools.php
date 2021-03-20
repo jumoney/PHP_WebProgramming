@@ -18,7 +18,7 @@
 	// 세션변수 값을 읽어 반환하는 함수
 	// 해당 값이 정의되지 않았으면 빈 문자열을 반환
 	function sessionVar($name) {
-		return isset($_REQUEST[$name]) ? $_REQUEST[$name] : "";
+		return isset($_SESSION[$name]) ? $_SESSION[$name] : "";
 	}
 	
 	// 지시된 URL로 이동하는 함수
