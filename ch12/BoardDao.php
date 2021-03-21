@@ -5,8 +5,10 @@ class BoardDao {
 	// DB에 접속하고 PDO 객체를 $db에 저장
 	public function __construct() {
 		try {
-			$this->db = new PDO("mysql:host=localhost;dbname=phpdb", "php", "1234");
-			$this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$this->db = new PDO("mysql:host=localhost;dbname=phpdb", 
+								"php", "1234");
+			$this->db->setAttribute(PDO::ATTR_ERRMODE, 
+									PDO::ERRMODE_EXCEPTION);
 		} catch (PDOException $e) {
 			exit($e->getMessage());
 		}
@@ -15,8 +17,25 @@ class BoardDao {
 	// 게시판의 전체 글 수(전체 레코드 수) 반환
 	public function getNumMsgs() {
 		try {
-			$query = this->db->prepare("select * from board where num=:num");
+			$query = $this->db->prepare("select count(*) 
+										from board");	
+			$query->execute();
 			
+			$numMsgs = $query->fetchColumn();
+			
+		} catch (PDOException $e) {
+			exit($e->getMessage());
+		}
+		
+		return $numMsgs;
+	}
+	
+	// $num번 게시글 데이터 반환
+	public function getMsgs($num) {
+		try {
+			$query = this->db->prepare("select * from board 
+										where num=:num");
+										
 			$query->bindValue(":num", $num, PDO::PARAM_INT);
 			$query->execute();
 			
@@ -32,7 +51,8 @@ class BoardDao {
 	// $start번부터 $rows 개의 게시글 데이터 반환(2차원 배열)
 	public function getManyMsgs($start, $rows) {
 		try{
-			$query = $this->db->prepare("select * from board order by num desc limit :start, :rows");
+			$query = $this->db->prepare("select * from board 
+			order by num desc limit :start, :rows");
 			
 			$query->bindValue(":start", $start, PDO::PARAM_INT);
 			$query->bindValue(":rows", $rows, PDO::PARAM_INT);
@@ -60,16 +80,59 @@ class BoardDao {
 			$query->bindValue(":content", $content, PDO::PARAM_STR);
 			$query->bindValue(":regtime", $regtime, PDO::PARAM_STR);
 			$query->execute();
-		}
-		
-		catch (PDOException $e) {
+			
+		} catch (PDOException $e) {
 				exit($e->getMessage());
 		}
+	}
+	
+	// $num번 게시글 업데이트
+	public function updateMsg($num, $writer, $title, $content) {
+		try {
+			$query = $this->db->prepare("update board set 
+									writer=:writer, title=:title,
+									content=:content, regtime=:regtime
+									where num-:num");
+											
+			$regtime = date("Y-m-d H:i:s");
+			$query->bindValue(":writer", $writer, PDO::PARAM_STR);
+			$query->bindValue(":title", $title, PDO::PARAM_STR);
+			$query->bindValue(":content", $content, PDO::PARAM_STR);
+			$query->bindValue(":regtime", $regtime, PDO::PARAM_STR);
+			$query->bindValue(":num", $num, PDO::PARAM_INT);
+			$query->execute();
+			
+		} catch (PDOException $e) {
+				exit($e->getMessage());
+		}
+	}
+	
+	// $num번 게시글 삭제
+	public function deleteMsg($num) {
+		try { 
+			$query = $this->db->prepare("delete from board
+										 where num=:num");
+										 
+			$query->bindValue(":num", $num, PDO::PARAM_INT);
+			$query->execute();
+		
+		} catch (PDOException $e) {
+			exit($e->getMessage());
+		} 
 	}
 	
 	// $num번 게시글의 조회 수 1 증가
 	public function increaseHits($num) {
 		try{
-			$
+			$query = $this->db->prepare("update board set	
+									hits=hits+1 where num=:num");
+									
+			$query->bindValue(":num", $num, PDO::PARAM_INT);
+			$query->execute();
+			
+		} catch (PDOException $e) {
+			exit($e->getMessage());
 		}
 	}
+}
+?>
