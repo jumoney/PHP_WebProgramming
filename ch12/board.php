@@ -72,7 +72,7 @@
 		<br>
 		<?php if ($firstLink > 1) : ?>
 			<a href="<?= bdUrl("board.php" , 0,
-											$page - NUM_PAGE_LINKS)?>"></a>&nbsp;
+											$page - NUM_PAGE_LINKS)?>"><</a>&nbsp;
 		<?php endif ?>
 		
 		<?php for ($i = $firstLink; $i <= $lastLink; $i++) : ?>
@@ -96,7 +96,7 @@
 		<div class="right">
 			<input type="button" value="글쓰기"
 				   onclick="location.href=
-				   '<?= bdUrl("writer_form.php", 0, $page) ?>'">
+				   '<?= bdUrl("write_form.php", 0, $page) ?>'">
 		</div>
 </div>
 
