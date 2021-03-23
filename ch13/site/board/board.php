@@ -34,70 +34,82 @@
 		if ($lastLink > $numPages)
 			$lastLink = $numPages;
 	}
+	
+	// 현재 로그인한 사용자 아이디 저장(로그아웃 상태이면 빈 문자열)
+	session_start_if_none();
+	$loginId = sessionVar("uid");
 ?>
 
 <!doctype html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<link rel="stylesheet" type="text/css" href="board.css">
+	<?php require("../html_head.php")?>
 </head>
 <body>
 
-<div class="container">
-	<?php if ($numMsgs > 0) : ?>
-		<table class="list">
-			<tr>
-				<th class="list-num">번호</th>
-				<th class="list-title">제목</th>
-				<th class="list-writer">작성자</th>
-				<th class="list-regtime">작성일시</th>
-				<th>조회수</th>
-			</tr>
+<div id="m-container">
+	<?php require("../header.php")?>
+	<?php require("../sidebar.php")?>
+	
+	<div id="m-content">
+		<?php if ($numMsgs > 0) : ?>
+			<table class="list">
+				<tr>
+					<th class="list-num">번호</th>
+					<th class="list-title">제목</th>
+					<th class="list-writer">작성자</th>
+					<th class="list-regtime">작성일시</th>
+					<th>조회수</th>
+				</tr>
+				
+				<?php foreach ($msgs as $row) : ?>
+				<tr>
+					<td><?= $row["num"]?></td>
+					<td class="left">
+						<a href="<?= bdUrl("view.php", $row["num"], 
+								  $page) ?>"><?= $row["title"] ?></a>
+					</td>
+					<td><?= $row["writer"]?></td>
+					<td><?= $row["regtime"]?></td>
+					<td><?= $row["hits"]?></td>
+				</tr>
+				<?php endforeach ?>
+			</table>
 			
-			<?php foreach ($msgs as $row) : ?>
-			<tr>
-				<td><?= $row["num"]?></td>
-				<td class="left">
-					<a href="<?= bdUrl("view.php", $row["num"], 
-							  $page) ?>"><?= $row["title"] ?></a>
-				</td>
-				<td><?= $row["writer"]?></td>
-				<td><?= $row["regtime"]?></td>
-				<td><?= $row["hits"]?></td>
-			</tr>
-			<?php endforeach ?>
-		</table>
-		
-		<br>
-		<?php if ($firstLink > 1) : ?>
-			<a href="<?= bdUrl("board.php" , 0,
-											$page - NUM_PAGE_LINKS)?>"><</a>&nbsp;
-		<?php endif ?>
-		
-		<?php for ($i = $firstLink; $i <= $lastLink; $i++) : ?>
-			<?php if ($i == $page) : ?>
-				<a href="<?= bdUrl("board.php", 0, $i)
-							 ?>"><b><?= $i ?></b></a>&nbsp;
-			<?php else : ?>
-				<a href="<?= bdUrl("board.php", 0, $i)
-							 ?>"><?= $i ?></a>&nbsp;
+			<br>
+			<?php if ($firstLink > 1) : ?>
+				<a href="<?= bdUrl("board.php" , 0,
+												$page - NUM_PAGE_LINKS)?>"><</a>&nbsp;
 			<?php endif ?>
-		<?php endfor ?>
-		
-		<?php if ($lastLink < $numPages) : ?>
-			<a href="<?= bdUrl("board.php", 0,
-								$page + NUM_PAGE_LINKS) ?>">></a>
+			
+			<?php for ($i = $firstLink; $i <= $lastLink; $i++) : ?>
+				<?php if ($i == $page) : ?>
+					<a href="<?= bdUrl("board.php", 0, $i)
+								 ?>"><b><?= $i ?></b></a>&nbsp;
+				<?php else : ?>
+					<a href="<?= bdUrl("board.php", 0, $i)
+								 ?>"><?= $i ?></a>&nbsp;
+				<?php endif ?>
+			<?php endfor ?>
+			
+			<?php if ($lastLink < $numPages) : ?>
+				<a href="<?= bdUrl("board.php", 0,
+									$page + NUM_PAGE_LINKS) ?>">></a>
+			<?php endif ?>
+			
 		<?php endif ?>
-		
-	<?php endif ?>
-		
-		<br><br>
-		<div class="right">
-			<input type="button" value="글쓰기"
-				   onclick="location.href=
-				   '<?= bdUrl("write_form.php", 0, $page) ?>'">
-		</div>
+			
+		<?php if ($loginId) : ?>
+			<br><br>
+			<div class="right">
+				<input type="button" value="글쓰기"
+					   onclick="location.href=
+					   '<?= bdUrl("write_form.php", 0, $page) ?>'">
+			</div>
+		<?php endif ?>
+	</div>
+	
+	<?php require("../footer.php")?>
 </div>
 
 </body>

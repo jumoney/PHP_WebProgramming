@@ -19,6 +19,16 @@
 	text-align: center;
 	overflow: auto;
 }
+#m-content {
+	width: 680px;
+	height: 300px;
+	padding: 20px;
+	margin-bottom: 20px;
+	float: right;
+	border: 1px solid #bcbcbc;
+	text-align: center;
+	overflow: auto;
+}
 #m-footer {
 	clear: both;
 	padding: 20px;

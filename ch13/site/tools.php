@@ -1,7 +1,7 @@
 <?php 
 	// 회원관리와 로그인 모듈을 위한 상수
-	define("MAIN_PAGE", "/site/index.php");
-	define("MEMBER_PATH", "/site/member");
+	define("MAIN_PAGE", "/exam/ch13/site/index.php");
+	define("MEMBER_PATH", "/exam/ch13/site/member");
 	
 	// 게시판 모듈의 URL을 반환하는 함수
 	function bdUrl($file, $num, $page) {
