@@ -1,5 +1,5 @@
 <?php
-	require_once("tools.php");
+	require_once("../tools.php");
 	
 	// 전달된 값 저장
 	$page = requestValue("page");
